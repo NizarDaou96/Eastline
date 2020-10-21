@@ -18,9 +18,15 @@ return (
 </Link>
 </div>
 
+<div className="col-auto">
+<Link to="/topstories-database" className="nav-link">
+  <p>Top Stories Database</p>
+</Link>
 </div>
 
+</div>
 );
+
 }
 
 export default Navbar;

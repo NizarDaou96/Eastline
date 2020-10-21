@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from "react";
 import axios from "axios";
 
+import DatabaseButton from "../Components/DatabaseButton";
 import List from "../Components/List";
 import MoreButton from "../Components/MoreButton"
 
@@ -37,23 +38,34 @@ function New(){
             })
         }
 
-    return (     
-<div>
-        {(list.length==0) && <div className="list-row row">Wait for data to be fetched !</div> }
-        {list.length>29 && list.map((Item, index) => {
-          
-            return (
-              <List
-                key={index}
-                id={index}
-                listItem={Item}
-              />    
-            );
-          })}
+        function addToDatabase() {
+          axios.post(`http://localhost:5000/api/NewStories/`,list)
+          .then( res => {
+            console.log("successfully added this list to mongoDB");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
 
+    return (         
+        <>
+          {list.length>29 && <DatabaseButton onClick={addToDatabase} name="Add List to Database" />}
+          {(list.length==0) && <div className="list-row row">Wait for data to be fetched !</div> }
+          {list.length>29 && list.map((Item, index) => {
+                      return (
+                      <List
+                        key={index}
+                        id={index}
+                        listItem={Item}
+                      />    
+                    );
+                  })}
+        
           {list.length>29 && <MoreButton onClick={changeSliceValues} />}
-</div>
-    )
+                  
+        </>
+        )
 }
 
 

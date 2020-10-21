@@ -2,7 +2,8 @@ import React,{useState,useEffect} from "react";
 import axios from "axios";
 
 import List from "../Components/List";
-import MoreButton from "../Components/MoreButton"
+import MoreButton from "../Components/MoreButton";
+import DatabaseButton from "../Components/DatabaseButton"
 
 
 function Home() {
@@ -37,8 +38,21 @@ function Home() {
             })
         }
         
+        function addToDatabase() {
+          axios.post(`http://localhost:5000/api/TopStories/`,list)
+          .then( res => {
+            console.log("successfully added this list to mongoDB");
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+
+
+
     return (     
-<div>
+<>
+        {list.length>29 && <DatabaseButton onClick={addToDatabase} name="Add List to Database" />}
         {(list.length==0) && <div className="list-row row">Wait for data to be fetched !</div> }
         {list.length>29 && list.map((Item, index) => {
           
@@ -52,7 +66,8 @@ function Home() {
           })}
 
           {list.length>29 && <MoreButton onClick={changeSliceValues} />}
-</div>
+          
+</>
     )
 }
 
